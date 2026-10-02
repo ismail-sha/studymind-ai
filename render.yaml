@@ -1,0 +1,30 @@
+# Render deployment config
+# This auto-creates: Web Service (backend) + PostgreSQL DB
+
+services:
+  - type: web
+    name: studymind-ai-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: studymind-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true      # Render auto-generates a secure random value
+      - key: ADMIN_EMAIL
+        sync: false              # You set this manually in Render dashboard
+      - key: FRONTEND_URL
+        sync: false              # You set this after Netlify deploy
+
+databases:
+  - name: studymind-db
+    databaseName: studymind
+    user: studymind_user
+    plan: free                   # Free PostgreSQL on Render (90 days)
