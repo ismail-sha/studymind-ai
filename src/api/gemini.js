@@ -23,7 +23,7 @@ const GEMINI_KEYS = [
   import.meta.env.VITE_GEMINI_API_KEY,
 ].filter(Boolean); // removes undefined/empty entries
 
-const GEMINI_MODEL = 'gemini-2.0-flash';
+const GEMINI_MODEL = 'gemini-3.6-flash';
 const GEMINI_BASE  = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 // ── Groq config ────────────────────────────────────────────────
@@ -143,7 +143,7 @@ async function callGemini(userMessage, systemPrompt, history, attempt = 1) {
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({
         contents,
-        generationConfig: { temperature: 0.7, maxOutputTokens: 2048, topP: 0.95 },
+        generationConfig: { temperature: 0.7, maxOutputTokens: 8192, topP: 0.95 },
         safetySettings: [
           { category: 'HARM_CATEGORY_HARASSMENT',        threshold: 'BLOCK_ONLY_HIGH' },
           { category: 'HARM_CATEGORY_HATE_SPEECH',       threshold: 'BLOCK_ONLY_HIGH' },
